@@ -1,9 +1,11 @@
 package GUI;
 
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 public class GUI extends JFrame
 {
@@ -11,7 +13,7 @@ public class GUI extends JFrame
     /**
      * Actual screen resolution
      */
-    int actualWidth = 1200;
+    int actualWidth = 1300;
     int actualHeight = 800;
 
     //colors
@@ -20,8 +22,6 @@ public class GUI extends JFrame
 
     //fonts
     Font fontBtn = new Font("Times New Roman", Font.PLAIN, 30);
-    Font fontBtn01 = new Font("Times New Roman", Font.PLAIN, 20);
-    Font fontBtn02 = new Font("Times New Roman", Font.PLAIN, 20);
 
     //Buttons
     JButton btnHit = new JButton();
@@ -35,10 +35,17 @@ public class GUI extends JFrame
     int gridW = 900;
     int gridH = 400;
 
+    //card dimensions and spacing
+    int cardSpacing = 10;
+    int cardTotalWidth = gridW/6;
+    int cardTotalHeight = gridH/2;
+    int cardActualWidth  = cardTotalWidth - 2 * cardSpacing;
+    int cardActualHeight = cardTotalHeight -2 * cardSpacing;
+
     //totals and hit-stay positioning and dimensions
     int hitStayX = gridX + gridW + 50;
     int hitStayY = gridY;
-    int hitStayW = 150;
+    int hitStayW = 230;
     int hitStayH = 400;
 
     //play more question grid positioning and dimensions
@@ -46,6 +53,11 @@ public class GUI extends JFrame
     int playMoreY = hitStayY + hitStayH + 50;
     int playMoreW = hitStayW;
     int playMoreH = 200;
+
+    //arraylist that contains all the cards
+    ArrayList<Card> allCards = new ArrayList<Card>();
+    ArrayList<Card> playerCards = new ArrayList<Card>();
+    ArrayList<Card> dealerCards = new ArrayList<Card>();
 
     public GUI()
     {
@@ -65,7 +77,7 @@ public class GUI extends JFrame
 
         ActHit aHit = new ActHit();
         btnHit.addActionListener(aHit);
-        btnHit.setBounds(hitStayX+18,hitStayY + 40, 120, 80);
+        btnHit.setBounds(hitStayX+ 55,hitStayY + 40, 120, 80);
         btnHit.setBackground(colorButton);
         btnHit.setFont(fontBtn);
         btnHit.setText("Hit");
@@ -73,7 +85,7 @@ public class GUI extends JFrame
 
         ActStay aStay = new ActStay();
         btnStay.addActionListener(aStay);
-        btnStay.setBounds(hitStayX + 18,hitStayY + 290, 120, 80);
+        btnStay.setBounds(hitStayX + 55,hitStayY + 280, 120, 80);
         btnStay.setBackground(colorButton);
         btnStay.setFont(fontBtn);
         btnStay.setText("Stay");
@@ -81,21 +93,22 @@ public class GUI extends JFrame
 
         ActYes aYes = new ActYes();
         btnYes.addActionListener(aYes);
-        btnYes.setBounds(playMoreX + 2  ,playMoreY + 110, 60, 40);
+        btnYes.setBounds(playMoreX + 10  ,playMoreY + 110, 100, 80);
         btnYes.setBackground(colorButton);
-        btnYes.setFont(fontBtn02);
+        btnYes.setFont(fontBtn);
         btnYes.setText("Yes");
         board.add(btnYes);
 
         ActNo aNo = new ActNo();
         btnNo.addActionListener(aNo);
-        btnNo.setBounds(playMoreX + 80, playMoreY + 110, 60, 40);
+        btnNo.setBounds(playMoreX + 120, playMoreY + 110, 100, 80);
         btnNo.setBackground(colorButton);
-        btnNo.setFont(fontBtn01);
+        btnNo.setFont(fontBtn);
         btnNo.setText("No");
         board.add(btnNo);
 
-    }//end of public GUI
+
+    }//end of constructor
 
     /**
      * Create class to draw all the
@@ -121,6 +134,21 @@ public class GUI extends JFrame
             //temporary play more grid
             graphics.drawRect(playMoreX,playMoreY,playMoreW,playMoreH);
 
+            /**
+             * This for loop will generate grids for
+             * both players and dealers cards
+             */
+            for (int i = 0; i < 6; i++)
+            {
+                //Players Cards Grid
+                graphics.drawRect(gridX +i * cardTotalWidth + cardSpacing,
+                        gridY + cardSpacing, cardActualWidth, cardActualHeight);
+
+                //Dealers Cards Grid
+                graphics.drawRect(gridX +i * cardTotalWidth + cardSpacing,
+                        gridY + cardSpacing + cardTotalHeight, cardActualWidth, cardActualHeight);
+
+            }//end of for
 
         }//end of paintComponent
 
