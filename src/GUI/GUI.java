@@ -107,6 +107,32 @@ public class GUI extends JFrame
         btnNo.setText("No");
         board.add(btnNo);
 
+        String suitOfCard ;
+        for (int st = 0; st < 4; st++)
+        {
+            if (st == 0)
+            {
+                suitOfCard = "Spades";
+            }
+            else if (st == 1)
+            {
+                suitOfCard = "Hearts";
+            }
+            else if (st == 2)
+            {
+                suitOfCard = "Diamonds";
+            }
+            else
+            {
+                suitOfCard = "Clubs";
+            }
+            for (int i = 2; i < 15; i++)
+            {
+                allCards.add(new Card(i,suitOfCard));
+            }//end of int(i)
+
+        }//end of fof(st)
+
 
     }//end of constructor
 
