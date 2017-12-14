@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class GUI extends JFrame
 {
@@ -59,6 +60,9 @@ public class GUI extends JFrame
     ArrayList<Card> playerCards = new ArrayList<Card>();
     ArrayList<Card> dealerCards = new ArrayList<Card>();
 
+    //integer used to generate random numbers for the cards to be given
+    int rand = new Random().nextInt(52);
+
     public GUI()
     {
         this.setSize(actualWidth+6,actualHeight+29);
@@ -108,6 +112,7 @@ public class GUI extends JFrame
         board.add(btnNo);
 
         String suitOfCard ;
+        int id_Setter = 0;
         for (int st = 0; st < 4; st++)
         {
             if (st == 0)
@@ -128,11 +133,66 @@ public class GUI extends JFrame
             }
             for (int i = 2; i < 15; i++)
             {
-                allCards.add(new Card(i,suitOfCard));
+                allCards.add(new Card(i,suitOfCard, id_Setter ));
+                id_Setter++;
             }//end of int(i)
 
         }//end of fof(st)
 
+        rand = new Random().nextInt(52);
+        playerCards.add(allCards.get(rand));
+        allCards.get(rand).cardUsed = true;
+
+        rand = new Random().nextInt(52);
+        while (true)
+        {
+            if(allCards.get(rand).cardUsed == false)
+            {
+                playerCards.add(allCards.get(rand));
+                allCards.get(rand).cardUsed = true;
+                break;
+
+            }//end of if (allCards)
+            else
+            {
+                rand = new  Random().nextInt(52);
+            }
+
+        }//end of while
+
+        rand = new Random().nextInt(52);
+        dealerCards.add(allCards.get(rand));
+        allCards.get(rand).cardUsed = true;
+
+        rand = new Random().nextInt(52);
+        while (true)
+        {
+            if(allCards.get(rand).cardUsed == false)
+            {
+                dealerCards.add(allCards.get(rand));
+                allCards.get(rand).cardUsed = true;
+                break;
+
+            }//end of if (allCards)
+            else
+            {
+                rand = new  Random().nextInt(52);
+            }
+        }//end of while
+
+        for (Card crd : playerCards)
+        {
+            System.out.println("Player has the card\t" + crd.cardName
+            + "\tof\t" + crd.cardSuit);
+
+        }//end of for(playerCards)
+
+        for (Card crd : dealerCards)
+        {
+            System.out.println("Dealer has the card\t" + crd.cardName
+                    + "\tof\t" + crd.cardSuit);
+
+        }//end of for(dealerCards)
 
     }//end of constructor
 

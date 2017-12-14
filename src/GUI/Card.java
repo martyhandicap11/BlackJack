@@ -7,11 +7,14 @@ public class Card
     boolean cardUsed = false;
     String cardSymbol;
     String cardName;
+    int cardID;
 
-    public  Card (int cValue, String cSuit )
+
+    public  Card (int cValue, String cSuit, int cID )
     {
         this.cardValue = cValue;
         this.cardSuit = cSuit;
+        this.cardID = cID;
 
         if( cardValue < 11)
         {
@@ -38,7 +41,8 @@ public class Card
             cardSymbol = "A";
             cardName = "Ace";
         }
-        System.out.println("Card" + cardName + "of" + cardSuit + "was created");
+        //System.out.println("Card" + cardName + "of" + cardSuit
+               // + "was created" +"card ID"+ this.cardID);
 
     }
 
