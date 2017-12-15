@@ -45,6 +45,7 @@ public class GUI extends JFrame
     int cardActualWidth  = cardTotalWidth - 2 * cardSpacing;
     int cardActualHeight = cardTotalHeight -2 * cardSpacing;
 
+
     //totals and hit-stay positioning and dimensions
     int hitStayX = gridX + gridW + 50;
     int hitStayY = gridY;
@@ -259,8 +260,30 @@ public class GUI extends JFrame
 
                 graphics.setFont(fontCard);
                 graphics.drawString(cd.cardSymbol, gridX + index * cardTotalWidth + cardSpacing *2 , gridY + cardSpacing + cardActualHeight);
+
+               /* graphics.setColor(Color.black);
+                graphics.fillOval(gridX + index * cardTotalWidth + 40, gridY + 85, 40, 40);
+                graphics.fillOval(gridX + index * cardTotalWidth + 70, gridY + 85, 40, 40);
+                graphics.fillArc(gridX + index * cardTotalWidth + 30, gridY + 28, 90, 70, 230,80);
+                graphics.fillRect(gridX + index * cardTotalWidth + 70, gridY + 90, 10, 50 );*/
+
+                if (cd.cardSuit.equalsIgnoreCase("Spades"))
+                {
+                    graphics.setColor(Color.black);
+                    graphics.fillOval(gridX + index * cardTotalWidth + 40, gridY + 85, 40, 40);
+                    graphics.fillOval(gridX + index * cardTotalWidth + 70, gridY + 85, 40, 40);
+                    graphics.fillArc(gridX + index * cardTotalWidth + 30, gridY + 28, 90, 70, 230,80);
+                    graphics.fillRect(gridX + index * cardTotalWidth + 70, gridY + 90, 10, 50 );
+
+
+
+                }
                 index++;
-            }
+
+
+            }//end of for (Card cd playerCards)
+
+
 
         }//end of paintComponent
 

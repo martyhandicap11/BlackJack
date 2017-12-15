@@ -3,7 +3,7 @@ package GUI;
 public class Card
 {
     int cardValue;
-    String cardSuit;
+    String cardSuit ;
     boolean cardUsed = false;
     String cardSymbol;
     String cardName;
@@ -20,6 +20,7 @@ public class Card
         {
             cardSymbol = Integer.toString(cValue);
             cardName   = Integer.toString(cValue);
+
         }
         else if (cardValue == 11)
         {
