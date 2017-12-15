@@ -23,6 +23,7 @@ public class GUI extends JFrame
 
     //fonts
     Font fontBtn = new Font("Times New Roman", Font.PLAIN, 30);
+    Font fontCard = new Font("Times New Roman", Font.BOLD, 40);
 
     //Buttons
     JButton btnHit = new JButton();
@@ -38,6 +39,7 @@ public class GUI extends JFrame
 
     //card dimensions and spacing
     int cardSpacing = 10;
+    int cardEdgeSofting = 7;
     int cardTotalWidth = gridW/6;
     int cardTotalHeight = gridH/2;
     int cardActualWidth  = cardTotalWidth - 2 * cardSpacing;
@@ -140,7 +142,7 @@ public class GUI extends JFrame
         }//end of fof(st)
 
         rand = new Random().nextInt(52);
-        playerCards.add(allCards.get(rand));
+        dealerCards.add(allCards.get(rand));
         allCards.get(rand).cardUsed = true;
 
         rand = new Random().nextInt(52);
@@ -148,7 +150,7 @@ public class GUI extends JFrame
         {
             if(allCards.get(rand).cardUsed == false)
             {
-                playerCards.add(allCards.get(rand));
+                dealerCards.add(allCards.get(rand));
                 allCards.get(rand).cardUsed = true;
                 break;
 
@@ -161,7 +163,7 @@ public class GUI extends JFrame
         }//end of while
 
         rand = new Random().nextInt(52);
-        dealerCards.add(allCards.get(rand));
+        playerCards.add(allCards.get(rand));
         allCards.get(rand).cardUsed = true;
 
         rand = new Random().nextInt(52);
@@ -169,7 +171,7 @@ public class GUI extends JFrame
         {
             if(allCards.get(rand).cardUsed == false)
             {
-                dealerCards.add(allCards.get(rand));
+                playerCards.add(allCards.get(rand));
                 allCards.get(rand).cardUsed = true;
                 break;
 
@@ -227,14 +229,38 @@ public class GUI extends JFrame
             for (int i = 0; i < 6; i++)
             {
                 //Players Cards Grid
-                graphics.drawRect(gridX +i * cardTotalWidth + cardSpacing,
-                        gridY + cardSpacing, cardActualWidth, cardActualHeight);
+                graphics.drawRect(gridX +i * cardTotalWidth + cardSpacing, gridY + cardSpacing, cardActualWidth, cardActualHeight);
 
                 //Dealers Cards Grid
-                graphics.drawRect(gridX +i * cardTotalWidth + cardSpacing,
-                        gridY + cardSpacing + cardTotalHeight, cardActualWidth, cardActualHeight);
+               graphics.drawRect(gridX +i * cardTotalWidth + cardSpacing,
+                       gridY + cardSpacing + cardTotalHeight, cardActualWidth, cardActualHeight);
 
             }//end of for
+
+            int index = 0;
+            //Draw player's cards
+            for (Card cd : playerCards)
+            {
+                graphics.setColor(Color.white);
+                graphics.fillRect(gridX +index * cardTotalWidth + cardSpacing, gridY + cardSpacing + cardEdgeSofting, cardActualWidth, cardActualHeight -2 * cardEdgeSofting);
+
+                graphics.fillOval(gridX +index * cardTotalWidth + cardSpacing, gridY + cardSpacing, 2 * cardEdgeSofting, 2 * cardEdgeSofting);
+                graphics.fillOval(gridX +index * cardTotalWidth + cardSpacing + cardActualWidth - 2 * cardEdgeSofting, gridY + cardSpacing, 2 * cardEdgeSofting, 2 * cardEdgeSofting);
+                graphics.fillOval(gridX +index * cardTotalWidth + cardSpacing, gridY + cardSpacing + cardActualHeight - 2 * cardEdgeSofting, 2 * cardEdgeSofting, 2 * cardEdgeSofting);
+                graphics.fillOval(gridX +index * cardTotalWidth + cardSpacing + cardActualWidth - 2 * cardEdgeSofting, gridY + cardSpacing + cardActualHeight - 2 * cardEdgeSofting, 2 * cardEdgeSofting, 2 * cardEdgeSofting);
+
+                graphics.fillRect(gridX +index * cardTotalWidth + cardSpacing + cardEdgeSofting, gridY + cardSpacing , cardActualWidth - 2 * cardEdgeSofting, cardActualHeight);
+
+                graphics.setColor(Color.black);
+                if (cd.cardSuit.equalsIgnoreCase("Hearts") || cd.cardSuit.equalsIgnoreCase("Diamonds"))
+                {
+                    graphics.setColor(Color.RED);
+                }
+
+                graphics.setFont(fontCard);
+                graphics.drawString(cd.cardSymbol, gridX + index * cardTotalWidth + cardSpacing *2 , gridY + cardSpacing + cardActualHeight);
+                index++;
+            }
 
         }//end of paintComponent
 
