@@ -23,7 +23,7 @@ public class GUI extends JFrame
 
     //fonts
     Font fontBtn = new Font("Times New Roman", Font.PLAIN, 30);
-    Font fontCard = new Font("Times New Roman", Font.BOLD, 40);
+    Font fontCard = new Font("Times New Roman", Font.BOLD, 30);
 
     //Buttons
     JButton btnHit = new JButton();
@@ -35,7 +35,7 @@ public class GUI extends JFrame
     int gridX = 50;
     int gridY = 50;
     int gridW = 900;
-    int gridH = 400;
+    int gridH = 420;
 
     //card dimensions and spacing
     int cardSpacing = 10;
@@ -261,23 +261,52 @@ public class GUI extends JFrame
                 graphics.setFont(fontCard);
                 graphics.drawString(cd.cardSymbol, gridX + index * cardTotalWidth + cardSpacing *2 , gridY + cardSpacing + cardActualHeight);
 
-               /* graphics.setColor(Color.black);
-                graphics.fillOval(gridX + index * cardTotalWidth + 40, gridY + 85, 40, 40);
-                graphics.fillOval(gridX + index * cardTotalWidth + 70, gridY + 85, 40, 40);
-                graphics.fillArc(gridX + index * cardTotalWidth + 30, gridY + 28, 90, 70, 230,80);
-                graphics.fillRect(gridX + index * cardTotalWidth + 70, gridY + 90, 10, 50 );*/
 
-                if (cd.cardSuit.equalsIgnoreCase("Spades"))
+               if (cd.cardSuit.equalsIgnoreCase("Spades"))
                 {
                     graphics.setColor(Color.black);
                     graphics.fillOval(gridX + index * cardTotalWidth + 40, gridY + 85, 40, 40);
                     graphics.fillOval(gridX + index * cardTotalWidth + 70, gridY + 85, 40, 40);
                     graphics.fillArc(gridX + index * cardTotalWidth + 30, gridY + 28, 90, 70, 230,80);
                     graphics.fillRect(gridX + index * cardTotalWidth + 70, gridY + 90, 10, 50 );
+                }
+               else if (cd.cardSuit.equalsIgnoreCase("Hearts"))
+                    {
+                    graphics.setColor(Color.red);
+                    graphics.fillOval(gridX + index * cardTotalWidth + 40, gridY + 70, 40, 40);
+                    graphics.fillOval(gridX + index * cardTotalWidth + 70, gridY + 70, 40, 40);
+                    graphics.fillArc(gridX + index * cardTotalWidth + 30, gridY + 96, 90, 70, 50,80);
 
+                }
+               else if (cd.cardSuit.equalsIgnoreCase("Diamonds"))
+                {
+                    int x1,x2,x3,x4,y1,y2,y3,y4;
+
+                    x1 = 75 + gridX + index * cardTotalWidth;
+                    y1 = 60 + gridY;
+                    x2 = 50  + gridX + index * cardTotalWidth;;
+                    y2 = 100 + gridY;
+                    x3 = 75  + gridX + index * cardTotalWidth;;
+                    y3 = 140 + gridY;
+                    x4 = 100  + gridX + index * cardTotalWidth;;
+                    y4 = 100 + gridY;
+
+                    int [] xDiamond= {x1,x2,x3,x4};
+                    int [] yDiamond= {y1,y2,y3,y4};
+                    graphics.setColor(Color.red);
+                    graphics.fillPolygon(xDiamond,yDiamond, 4);
 
 
                 }
+               else
+                {
+                  graphics.setColor(Color.black);
+                  graphics.fillOval(gridX + index * cardTotalWidth + 35, gridY + 85, 40, 40);
+                  graphics.fillOval(gridX + index * cardTotalWidth + 75, gridY + 85, 40, 40);
+                  graphics.fillOval(gridX +index * cardTotalWidth + 55, gridY + 55, 40, 40);
+                  graphics.fillRect(gridX + index * cardTotalWidth + 70, gridY + 90, 10, 50 );
+                }
+
                 index++;
 
 
