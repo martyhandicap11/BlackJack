@@ -22,6 +22,7 @@ public class Main implements Runnable
     {
         while (true)
         {
+            gui.reFresher();
             gui.repaint();
         }//end of while
 

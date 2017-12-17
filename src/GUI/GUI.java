@@ -17,13 +17,24 @@ public class GUI extends JFrame
     int actualWidth = 1300;
     int actualHeight = 800;
 
+    //booleans for game phases
+    boolean optionHitStay = true;
+    boolean dealersTurn = false;
+    boolean optionPlayMore = false;
+
+
     //colors
     Color colorBackground = new Color(39,118,28);
     Color colorButton = new Color(204,204, 0);
 
     //fonts
     Font fontBtn = new Font("Times New Roman", Font.PLAIN, 30);
-    Font fontCard = new Font("Times New Roman", Font.BOLD, 30);
+    Font fontCard = new Font("Times New Roman", Font.BOLD, 40);
+    Font fontQuestion = new Font("Times New Roman", Font.BOLD, 40);
+
+
+    //questions
+    String playMore = "Play More ?";
 
     //Buttons
     JButton btnHit = new JButton();
@@ -62,6 +73,13 @@ public class GUI extends JFrame
     ArrayList<Card> allCards = new ArrayList<Card>();
     ArrayList<Card> playerCards = new ArrayList<Card>();
     ArrayList<Card> dealerCards = new ArrayList<Card>();
+
+    // player - dealer totals
+    int totalPlayerMax;
+    int totalPlayerMin;
+    int totalDealerMax;
+    int totalDealerrMin;
+
 
     //integer used to generate random numbers for the cards to be given
     int rand = new Random().nextInt(52);
@@ -200,6 +218,84 @@ public class GUI extends JFrame
     }//end of constructor
 
     /**
+     * This method will handle game
+     * options, whether the player hits
+     * or stays. Making buttons
+     * visible or invisible
+     */
+    public void reFresher ()
+    {
+       if (optionHitStay == true)
+       {
+           btnHit.setVisible(true);
+           btnStay.setVisible(true);
+           btnYes.setVisible(false);
+           btnNo.setVisible(false);
+       }
+       else if (dealersTurn == true)
+       {
+           btnHit.setVisible(false);
+           btnStay.setVisible(false);
+           btnYes.setVisible(false);
+           btnNo.setVisible(false);
+       }
+       else if (optionPlayMore == true)
+       {
+           btnHit.setVisible(false);
+           btnStay.setVisible(false);
+           btnYes.setVisible(true);
+           btnNo.setVisible(true);
+       }
+
+        //totals checker
+
+        //player total
+        int cardSum = 0;
+        boolean hasAces = false;
+        for (Card cd : playerCards)
+        {
+           if (cd.cardSymbol.equalsIgnoreCase("Ace"))
+           {
+               hasAces = true;
+           }
+           cardSum += cd.cardPrintedValue;
+        }
+        totalPlayerMin = cardSum;
+        totalPlayerMax = cardSum;
+        if (hasAces == true)
+        {
+           totalPlayerMax += 10;
+        }
+
+        //dealer total
+        cardSum = 0;
+        hasAces = false;
+        for (Card cd : dealerCards)
+        {
+            if (cd.cardSymbol.equalsIgnoreCase("Ace"))
+            {
+                hasAces = true;
+            }
+            cardSum += cd.cardPrintedValue;
+        }
+        totalDealerrMin = cardSum;
+        totalDealerMax = cardSum;
+        if (hasAces == true)
+        {
+            totalDealerMax += 10;
+        }
+
+
+    }// end of reFresher
+
+    public void dealerHitStay()
+    {
+
+
+    }//end of dealerHitStay
+
+
+    /**
      * Create class to draw all the
      * required to create graphics
      */
@@ -223,6 +319,26 @@ public class GUI extends JFrame
             //temporary play more grid
             graphics.drawRect(playMoreX,playMoreY,playMoreW,playMoreH);
 
+            //Create question
+            if (optionPlayMore == true)
+            {
+                graphics.setFont(fontQuestion);
+                graphics.drawString(playMore, playMoreX + 15, playMoreY + 60);
+
+            }
+            else if (optionHitStay == true)
+            {
+               graphics.setFont(fontQuestion);
+               graphics.drawString(Integer.toString(totalPlayerMin) + "/" + Integer.toString(totalPlayerMax), hitStayX + 72, hitStayY + 220);
+
+            }
+            else if (dealersTurn)
+            {
+                graphics.setFont(fontCard);
+                graphics.drawString(Integer.toString(totalPlayerMin) + "/" + Integer.toString(totalPlayerMax), hitStayX + 72, hitStayY + 120);
+                graphics.drawString(Integer.toString(totalDealerrMin) + "/" + Integer.toString(totalDealerMax), hitStayX + 72, hitStayY + 320);
+            }
+
             /**
              * This for loop will generate grids for
              * both players and dealers cards
@@ -238,8 +354,12 @@ public class GUI extends JFrame
 
             }//end of for
 
+            /**
+             * Paint all cards
+             */
+
+            //Player Cards
             int index = 0;
-            //Draw player's cards
             for (Card cd : playerCards)
             {
                 graphics.setColor(Color.white);
@@ -308,11 +428,76 @@ public class GUI extends JFrame
                 }
 
                 index++;
-
-
             }//end of for (Card cd playerCards)
 
+            //Dealer's Cards
+            if (dealersTurn == true) {
+                index = 0;
+                for (Card cd : dealerCards) {
+                    graphics.setColor(Color.white);
+                    graphics.fillRect(gridX + index * cardTotalWidth + cardSpacing, gridY + cardTotalHeight + cardSpacing + cardEdgeSofting, cardActualWidth, cardActualHeight - 2 * cardEdgeSofting);
 
+                    graphics.fillOval(gridX + index * cardTotalWidth + cardSpacing, gridY + cardTotalHeight + cardSpacing, 2 * cardEdgeSofting, 2 * cardEdgeSofting);
+                    graphics.fillOval(gridX + index * cardTotalWidth + cardSpacing + cardActualWidth - 2 * cardEdgeSofting, gridY + cardTotalHeight + cardSpacing, 2 * cardEdgeSofting, 2 * cardEdgeSofting);
+                    graphics.fillOval(gridX + index * cardTotalWidth + cardSpacing, gridY + cardTotalHeight + cardSpacing + cardActualHeight - 2 * cardEdgeSofting, 2 * cardEdgeSofting, 2 * cardEdgeSofting);
+                    graphics.fillOval(gridX + index * cardTotalWidth + cardSpacing + cardActualWidth - 2 * cardEdgeSofting, gridY + cardTotalHeight + cardSpacing + cardActualHeight - 2 * cardEdgeSofting, 2 * cardEdgeSofting, 2 * cardEdgeSofting);
+
+                    graphics.fillRect(gridX + index * cardTotalWidth + cardSpacing + cardEdgeSofting, gridY + cardTotalHeight + cardSpacing, cardActualWidth - 2 * cardEdgeSofting, cardActualHeight);
+
+                    graphics.setColor(Color.black);
+                    if (cd.cardSuit.equalsIgnoreCase("Hearts") || cd.cardSuit.equalsIgnoreCase("Diamonds")) {
+                        graphics.setColor(Color.RED);
+                    }
+
+                    graphics.setFont(fontCard);
+                    graphics.drawString(cd.cardSymbol, gridX + index * cardTotalWidth + cardSpacing * 2, gridY + cardTotalHeight + cardSpacing + cardActualHeight);
+
+
+                    if (cd.cardSuit.equalsIgnoreCase("Spades")) {
+                        graphics.setColor(Color.black);
+                        graphics.fillOval(gridX + index * cardTotalWidth + 40, gridY + cardTotalHeight + 85, 40, 40);
+                        graphics.fillOval(gridX + index * cardTotalWidth + 70, gridY + cardTotalHeight + 85, 40, 40);
+                        graphics.fillArc(gridX + index * cardTotalWidth + 30, gridY + cardTotalHeight + 28, 90, 70, 230, 80);
+                        graphics.fillRect(gridX + index * cardTotalWidth + 70, gridY + cardTotalHeight + 90, 10, 50);
+                    } else if (cd.cardSuit.equalsIgnoreCase("Hearts")) {
+                        graphics.setColor(Color.red);
+                        graphics.fillOval(gridX + index * cardTotalWidth + 40, gridY + cardTotalHeight + 70, 40, 40);
+                        graphics.fillOval(gridX + index * cardTotalWidth + 70, gridY + cardTotalHeight + 70, 40, 40);
+                        graphics.fillArc(gridX + index * cardTotalWidth + 30, gridY + cardTotalHeight + 96, 90, 70, 50, 80);
+
+                    } else if (cd.cardSuit.equalsIgnoreCase("Diamonds")) {
+                        int x1, x2, x3, x4, y1, y2, y3, y4;
+
+                        x1 = 75 + gridX + index * cardTotalWidth;
+                        y1 = 60 + gridY + cardTotalHeight;
+                        x2 = 50 + gridX + index * cardTotalWidth;
+                        ;
+                        y2 = 100 + gridY + cardTotalHeight;
+                        x3 = 75 + gridX + index * cardTotalWidth;
+                        ;
+                        y3 = 140 + gridY + cardTotalHeight;
+                        x4 = 100 + gridX + index * cardTotalWidth;
+                        ;
+                        y4 = 100 + gridY + cardTotalHeight;
+
+                        int[] xDiamond = {x1, x2, x3, x4};
+                        int[] yDiamond = {y1, y2, y3, y4};
+                        graphics.setColor(Color.red);
+                        graphics.fillPolygon(xDiamond, yDiamond, 4);
+
+
+                    } else {
+                        graphics.setColor(Color.black);
+                        graphics.fillOval(gridX + index * cardTotalWidth + 35, gridY + cardTotalHeight + 85, 40, 40);
+                        graphics.fillOval(gridX + index * cardTotalWidth + 75, gridY + cardTotalHeight + 85, 40, 40);
+                        graphics.fillOval(gridX + index * cardTotalWidth + 55, gridY + cardTotalHeight + 55, 40, 40);
+                        graphics.fillRect(gridX + index * cardTotalWidth + 70, gridY + cardTotalHeight + 90, 10, 50);
+                    }
+
+                    index++;
+                }//end of for (Card cd dealerCards)
+
+            }// end of if (dealersTurn)
 
         }//end of paintComponent
 
@@ -320,13 +505,27 @@ public class GUI extends JFrame
 
     public class ActHit implements ActionListener
     {
-
         @Override
         public void actionPerformed(ActionEvent e)
         {
             System.out.println("You just clicked the HIT button!");
-        }
+            rand = new Random().nextInt(52);
 
+            while (true)
+            {
+                if(allCards.get(rand).cardUsed == false)
+                {
+                    playerCards.add(allCards.get(rand));
+                    allCards.get(rand).cardUsed = true;
+                    break;
+
+                }//end of if (allCards)
+                else
+                {
+                    rand = new  Random().nextInt(52);
+                }
+            }//end of while
+        }//end of actionPerformed
     }//end of ActHit
 
     public class ActStay implements ActionListener
@@ -336,7 +535,9 @@ public class GUI extends JFrame
         public void actionPerformed(ActionEvent e)
         {
             System.out.println("You just clicked the STAY button!");
-
+            optionHitStay = false;
+            dealersTurn = true;
+            dealerHitStay();
         }
     }
 
